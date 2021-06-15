@@ -41,23 +41,15 @@ export default function App() {
       <Suspense fallback={<Loader />}>
         <Switch>
           <Route exact path="/" component={HomeView} />
-          <PublicRoute
-            path="/register"
-            component={RegisterView}
-            restricted
-            redirectTo={'/contacts'}
-          />
-          <PublicRoute
-            path="/login"
-            restricted
-            component={LoginView}
-            redirectTo={'/contacts'}
-          />
-          <PrivateRoute
-            path="/contacts"
-            component={ContactsView}
-            redirectTo="/login"
-          />
+          <PublicRoute path="/register" restricted redirectTo={'/contacts'}>
+            <RegisterView />
+          </PublicRoute>
+          <PublicRoute path="/login" restricted redirectTo={'/contacts'}>
+            <LoginView />
+          </PublicRoute>
+          <PrivateRoute path="/contacts" redirectTo="/login">
+            <ContactsView />
+          </PrivateRoute>
         </Switch>
       </Suspense>
     </>
