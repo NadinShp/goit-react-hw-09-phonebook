@@ -33,9 +33,7 @@ export default function App() {
     <>
       <AppBar position="relative">
         <Container fixed>
-          {/* <Toolbar> */}
           <ApplicationBar />
-          {/* </Toolbar> */}
         </Container>
       </AppBar>
       <Suspense fallback={<Loader />}>

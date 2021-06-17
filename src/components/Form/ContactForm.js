@@ -33,16 +33,19 @@ export default function ContactForm() {
     },
     [dispatch],
   );
-  const [name, setName] = useState('');
+  const [contact, setContact] = useState({
+    name: '',
+    number: '',
+  });
 
-  const changeName = e => {
-    setName(e.target.value);
+  const handleChange = ({ target: { name, value } }) => {
+    setContact(prev => ({
+      ...prev,
+      [name]: value,
+    }));
   };
-  const [number, setNumber] = useState('');
-  const changeNumber = e => {
-    setNumber(e.target.value);
-  };
-  const handleCreateContactsObject = (name, number) => {
+
+  const handleCreateContactsObject = ({ name, number }) => {
     return {
       name,
       number,
@@ -52,24 +55,25 @@ export default function ContactForm() {
   const handleSubmit = useCallback(
     e => {
       e.preventDefault();
-      setName('');
-      setNumber('');
+      const { name, number } = contact;
       const checkingContact = items.find(
         item => item.name.toLowerCase() === name.toLowerCase(),
       );
       if (checkingContact) {
+        setContact({ name: '', number: '' });
         return alert(`${name} is already in contacts`);
       } else {
-        const newContact = handleCreateContactsObject(name, number);
+        const newContact = handleCreateContactsObject({ name, number });
         onSubmit(newContact);
+        setContact({ name: '', number: '' });
       }
     },
-    [items, name, number, onSubmit],
+    [items, contact, onSubmit],
   );
   return (
     <form onSubmit={handleSubmit} className={styless.form}>
       <TextField
-        onChange={changeName}
+        onChange={handleChange}
         variant="outlined"
         margin="normal"
         required
@@ -78,10 +82,10 @@ export default function ContactForm() {
         label="Name"
         name="name"
         autoFocus
-        value={name}
+        value={contact.name}
       />
       <TextField
-        onChange={changeNumber}
+        onChange={handleChange}
         variant="outlined"
         margin="normal"
         required
@@ -91,7 +95,7 @@ export default function ContactForm() {
         name="number"
         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
         autoFocus
-        value={number}
+        value={contact.number}
       />
       <Button
         className={styless.btn}

@@ -23,32 +23,24 @@ const useStyles = makeStyles(theme => ({
 export default function RegisterView() {
   const dispatch = useDispatch();
   const onRegister = data => dispatch(authOperations.register(data));
-  const [name, setName] = useState('');
-  const handleChangeName = e => {
-    setName(e.target.value);
-  };
-  const [email, setEmail] = useState('');
-  const handleChangeEmail = e => {
-    setEmail(e.target.value);
-  };
-  const [password, setPassword] = useState('');
-  const handleChangePassword = e => {
-    setPassword(e.target.value);
-  };
-  const handleCreateObj = (name, email, password) => {
-    return { name, email, password };
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+  const handleChange = ({ target: { value, name } }) => {
+    setUser(prev => ({ ...prev, [name]: value }));
   };
   const handleSubmit = e => {
     e.preventDefault();
-    const userObj = handleCreateObj(name, email, password);
-    onRegister(userObj);
+    onRegister(user);
   };
   const styless = useStyles();
   return (
     <Container>
       <form onSubmit={handleSubmit} className={styless.form}>
         <TextField
-          onChange={handleChangeName}
+          onChange={handleChange}
           variant="outlined"
           margin="normal"
           required
@@ -57,10 +49,10 @@ export default function RegisterView() {
           label="Name"
           name="name"
           autoFocus
-          value={name}
+          value={user.name}
         />
         <TextField
-          onChange={handleChangeEmail}
+          onChange={handleChange}
           variant="outlined"
           margin="normal"
           required
@@ -70,10 +62,10 @@ export default function RegisterView() {
           name="email"
           autoComplete="email"
           autoFocus
-          value={email}
+          value={user.email}
         />
         <TextField
-          onChange={handleChangePassword}
+          onChange={handleChange}
           variant="outlined"
           margin="normal"
           required
@@ -82,7 +74,7 @@ export default function RegisterView() {
           label="Password"
           type="password"
           id="password"
-          value={password}
+          value={user.password}
         />
         <Button
           type="submit"

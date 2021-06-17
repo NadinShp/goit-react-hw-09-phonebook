@@ -24,28 +24,28 @@ export default function LoginView() {
   const dispatch = useDispatch();
   const onLogin = data => dispatch(authOperations.logIn(data));
 
-  const [email, setEmail] = useState('');
-  const handleChangeEmail = e => {
-    setEmail(e.target.value);
+  const [user, setUser] = useState({
+    email: '',
+    password: '',
+  });
+  const handleChange = ({ target: { value, name } }) => {
+    setUser(prev => ({ ...prev, [name]: value }));
   };
-  const [password, setPassword] = useState('');
-  const handleChangePassword = e => {
-    setPassword(e.target.value);
-  };
-  const handleCreateObj = (email, password) => {
-    return { email, password };
-  };
+  // const handleChange =
+  //   prop =>
+  //   ({ target: { value } }) => {
+  //     setUser(prev => ({ ...prev, [prop]: value }));
+  //   };
   const handleSubmit = e => {
     e.preventDefault();
-    const userObj = handleCreateObj(email, password);
-    onLogin(userObj);
+    onLogin(user);
   };
   const styless = useStyles();
   return (
     <Container>
       <form onSubmit={handleSubmit} className={styless.form}>
         <TextField
-          onChange={handleChangeEmail}
+          onChange={handleChange}
           variant="outlined"
           margin="normal"
           required
@@ -55,10 +55,10 @@ export default function LoginView() {
           name="email"
           autoComplete="email"
           autoFocus
-          value={email}
+          value={user.email}
         />
         <TextField
-          onChange={handleChangePassword}
+          onChange={handleChange}
           variant="outlined"
           margin="normal"
           required
@@ -67,7 +67,7 @@ export default function LoginView() {
           label="Password"
           type="password"
           id="password"
-          value={password}
+          value={user.password}
         />
         <Button
           type="submit"
