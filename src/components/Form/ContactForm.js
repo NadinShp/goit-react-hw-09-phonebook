@@ -6,8 +6,8 @@ import * as contactOperation from '../../redux/phonebook/operations-phonebook';
 import * as selectors from '../../redux/phonebook/selector-phonebook';
 import { Button, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import shortid from 'shortid';
 
-const shortid = require('shortid');
 const useStyles = makeStyles(theme => ({
   form: {
     position: 'relative',
